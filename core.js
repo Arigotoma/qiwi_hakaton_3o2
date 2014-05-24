@@ -1,11 +1,11 @@
 var game = angular.module('game', []);
 
 function extend(Child, Parent) {
-    var F = function() { }
-    F.prototype = Parent.prototype
-    Child.prototype = new F()
-    Child.prototype.constructor = Child
-    Child.superclass = Parent.prototype
+    var F = function() { };
+    F.prototype = Parent.prototype;
+    Child.prototype = new F();
+    Child.prototype.constructor = Child;
+    Child.superclass = Parent.prototype;
 }
 
 if (!Date.now) {
@@ -21,11 +21,17 @@ function Block () {
 }
 
 function Armament () {
-    this.reloadPersent = 100;
+    this.reloadPersent = 0;
     this._reloadTime = 5000;
 
     this.calculate = function () {
-        this.reloadPersent += (Date.now() - this._lastUpdateTime)*100/this._reloadTime;
+        if (this.reloadPersent < 100) {
+            this.reloadPersent += (Date.now() - this._lastUpdateTime)*100/this._reloadTime;
+            if (this.reloadPersent > 100) {
+                this.reloadPersent = 100;
+            }
+        }
+
         this._lastUpdateTime = Date.now();
     };
 
@@ -34,7 +40,8 @@ function Armament () {
     }
 }
 Armament.prototype = new Block()
-extend(Armament, Block);
+//extend(Armament, Block);
+
 
 game.controller('GameCtrl', function ($scope) {
 
@@ -44,11 +51,22 @@ game.controller('GameCtrl', function ($scope) {
 
     $scope.maxEnergy = 5;
     $scope.lastEnergy = 5;
+    $scope.live = 100;
     $scope.blocks = [new Armament(), new Block(), new Block(), new Block()];
 
-    $scope.init = function () {
+    $scope.enemyLive = 100;
+    $scope.enemyBlocks = [new Armament(), new Block(), new Block(), new Block()];
 
+
+    $scope.init = function () {
+        $scope.createEnemy();
     }
+
+    $scope.createEnemy = function () {
+        for (var i = 0; i < $scope.enemyBlocks.length; i++) {
+            $scope.enemyBlocks[i].energy = 1;
+        }
+    };
 
     $scope.changeEnergy = function (block, value) {
         $scope.blocks[block].energy += value;
@@ -58,13 +76,25 @@ game.controller('GameCtrl', function ($scope) {
 
     $scope.fire = function () {
         $scope.blocks[$scope.BLOCK_ARMAMENT].fire();
-    }
+    };
 
-
-    $scope.timerId = setInterval(function () {
-        for (var i = 0; i < $scope.blocks.length; i++) {
-            var block = $scope.blocks[i];
+    $scope.update = function () {
+        var i, block;
+        for (i = 0; i < $scope.blocks.length; i++) {
+            block = $scope.blocks[i];
             block.calculate();
         }
+
+        for (i = 0; i < $scope.enemyBlocks.length; i++) {
+            block = $scope.enemyBlocks[i];
+            block.calculate();
+        }
+    };
+
+    $scope.init();
+
+    $scope.timerId = setInterval(function () {
+        $scope.update();
+        $scope.$apply();
     }, 1000);
 });
