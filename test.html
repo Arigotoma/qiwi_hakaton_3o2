@@ -7,32 +7,42 @@
     <script src="core.js"></script>
 </head>
 <body>
-    <div ng-controller="GameCtrl">
-        <div style="float: left;">
+    <div ng-controller="GameCtrl" style="width: 100%">
+        <div style="float: left; width: 40%;">
             <div>
-                <b>Вооружение:</b> Энергия: {{blocks[BLOCK_ARMAMENT].energy}}
-                <button ng-click="changeEnergy(BLOCK_ARMAMENT, 1)">+</button>
-                <button ng-click="changeEnergy(BLOCK_ARMAMENT, -1)">-</button>
+                Жизни: {{player.live}}
+            </div>
+            <div>
+                Кислород(
+                {{player.blocks[BLOCK_OXYGEN].energy}} <button ng-click="changeEnergy(BLOCK_OXYGEN, 1)">+</button>
+                <button ng-click="changeEnergy(BLOCK_OXYGEN, -1)">-</button>): {{player.blocks[BLOCK_OXYGEN].oxygen}}
+            </div>
+            <div>
+                Вооружение({{player.blocks[BLOCK_ARMAMENT].energy}} <button ng-click="changeEnergy(BLOCK_ARMAMENT, 1)">+</button>
+                <button ng-click="changeEnergy(BLOCK_ARMAMENT, -1)">-</button>):
 
-                Процент заряда: {{blocks[BLOCK_ARMAMENT].reloadPersent}}
                 <button ng-click="fire()">Выстрелить</button>
+                Процент заряда: {{player.blocks[BLOCK_ARMAMENT].reloadPersent}}
             </div>
 
             <div>
-                Защита: {{blocks[BLOCK_SHIELD].energy}}
+                Защита: {{player.blocks[BLOCK_SHIELD].energy}}
                 <button ng-click="changeEnergy(BLOCK_SHIELD, 1)">+</button>
                 <button ng-click="changeEnergy(BLOCK_SHIELD, -1)">-</button>
             </div>
         </div>
 
-        <div style="float: right">
+        <div style="float: right; width: 40%">
             <div>
-                <b>Вооружение:</b> Энергия: {{enemyBlocks[BLOCK_ARMAMENT].energy}}
-                Процент заряда: {{enemyBlocks[BLOCK_ARMAMENT].reloadPersent}}
+                Жизни: {{enemy.live}}
+            </div>
+            <div>
+                <b>Вооружение:</b> Энергия: {{enemy.blocks[BLOCK_ARMAMENT].energy}}
+                Процент заряда: {{enemy.blocks[BLOCK_ARMAMENT].reloadPersent}}
             </div>
 
             <div>
-                Защита: {{enemyBlocks[BLOCK_SHIELD].energy}}
+                Защита: {{enemy.blocks[BLOCK_SHIELD].energy}}
             </div>
         </div>
 
