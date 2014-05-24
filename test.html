@@ -1,0 +1,26 @@
+<!doctype html>
+<html  lang="en" ng-app="game">
+<head>
+    <title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
+    <script src="core.js"></script>
+</head>
+<body>
+    <div ng-controller="GameCtrl">
+        <div>
+            <b>Вооружение:</b> Энергия: {{blocks[BLOCK_ARMAMENT].energy}}
+            <button ng-click="changeEnergy(BLOCK_ARMAMENT, 1)">+</button>
+            <button ng-click="changeEnergy(BLOCK_ARMAMENT, -1)">-</button>
+
+            Процент заряда: {{blocks[BLOCK_ARMAMENT].reloadPersent}}
+            <button ng-click="fire()">Выстрелить</button>
+        </div>
+
+        <div>
+            Защита: {{blocks[BLOCK_SHIELD].energy}}
+            <button ng-click="changeEnergy(BLOCK_SHIELD, 1)">+</button>
+            <button ng-click="changeEnergy(BLOCK_SHIELD, -1)">-</button>
+        </div>
+    </div>
+</body>
+</html>
