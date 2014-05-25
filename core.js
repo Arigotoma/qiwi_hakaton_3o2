@@ -31,8 +31,17 @@ function Block () {
     this.people = 0;
     this.repareTime = 10000;
     this._lastUpdateTime = Date.now();
+    this._maxEnergy = 10;
 
     this.damages = [];
+
+    this.changeEnergy = function () {
+        if (this.energy >= this._maxEnergy) {
+            this.energy = 0;
+        } else {
+            this.energy += 1;
+        }
+    };
 
     this.addDamage = function (damage) {
         this.damages.push(damage);
@@ -59,11 +68,18 @@ function Block () {
 }
 
 function Armament () {
+    this._maxEnergy = 3;
+
     this.reloadPersent = 0;
     this._reloadTime = 5000;
 
+    this.changeEnergy = function () {
+        Armament.prototype.changeEnergy.call(this);
+        this.reloadPersent = 0;
+    };
+
     this.calculate = function () {
-        this.prototype.calculate.call(this);
+        Armament.prototype.calculate.call(this);
 
         if (this.reloadPersent < 100) {
             this.reloadPersent += (Date.now() - this._lastUpdateTime)*100/this._reloadTime;
@@ -82,19 +98,27 @@ function Armament () {
 Armament.prototype = new Block();
 //extend(Armament, Block);
 
+function Shield () {
+    this._maxEnergy = 2;
+}
+Shield.prototype = new Block();
+
 function Oxygen () {
+    this._maxEnergy = 1;
     this.oxygen = 100;
     this.lossPerSecond = 0.5;
     this.damagedBlocks = 0;
     this.damagedBlocksLossPerSecond = 0.5;
 
     this.calculate = function () {
+        Oxygen.prototype.calculate.call(this);
+
         var d = Date.now() - this._lastUpdateTime;
 
         this.oxygen -= d*this.lossPerSecond/1000;
         this.oxygen -= d*this.damagedBlocksLossPerSecond*this.damagedBlocks/1000;
 
-        this.oxygen += d*this.lossPerSecond/1000;
+        this.oxygen += d*this.energy*this.lossPerSecond*1.5/1000;
 
         if (this.oxygen > 100) {
             this.oxygen = 100;
@@ -121,7 +145,7 @@ game.controller('GameCtrl', function ($scope) {
         oxygen: 100,
         maxEnergy: 5,
         lastEnergy: 5,
-        blocks: [new Armament(), new Block(), new Block(), new Oxygen()]
+        blocks: [new Armament(), new Shield(), new Block(), new Oxygen()]
     };
 
     $scope.enemy = {
@@ -148,6 +172,10 @@ game.controller('GameCtrl', function ($scope) {
         $scope.player.lastEnergy -= value;
     };
 
+    $scope.changeEnergy2 = function (block) {
+        $scope.player.blocks[block].changeEnergy();
+    };
+
 
     $scope.fire = function () {
         //$scope.player.live -= 1;
@@ -161,7 +189,7 @@ game.controller('GameCtrl', function ($scope) {
             damage = 0;
         }
         attacker.blocks[$scope.BLOCK_ARMAMENT].fire();
-        victim.live += victim.blocks[$scope.BLOCK_SHIELD].energy - attacker.blocks[$scope.BLOCK_ARMAMENT].energy;
+        victim.live -= damage;
 
         if (Math.random() < 0.2) {
             attacker.blocks[block_id].addDamage(new Damage(getRandomInt(0, 1)));

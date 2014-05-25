@@ -1,0 +1,85 @@
+#live {
+    position: absolute;
+    top: 60px;
+    left: 45px;
+}
+
+#oxygen {
+    position: absolute;
+    top: 130px;
+    left: 65px;
+}
+
+#enemy-live {
+    position: absolute;
+    top: 140px;
+    left: 790px;
+}
+
+.btn {
+    cursor: pointer;
+    display: block;
+    line-height: 0px;
+    border: none;
+    padding: 0;
+}
+
+#armament-btn {
+    height: 32px;
+    width: 32px;
+
+    background: url('img/btn/armament.png') no-repeat 0 0;
+    background-size: cover;
+
+    top: 530px;
+    left: 287px;
+    position: absolute;
+}
+
+#shield-btn {
+    height: 32px;
+    width: 32px;
+
+    background: url('img/btn/shield.png') no-repeat 0 0;
+    background-size: cover;
+
+    top: 530px;
+    left: 167px;
+    position: absolute;
+}
+
+#oxygen-btn {
+    height: 32px;
+    width: 32px;
+
+    background: url('img/btn/o2.png') no-repeat 0 0;
+    background-size: cover;
+
+    top: 530px;
+    left: 85px;
+    position: absolute;
+}
+
+#armament-energy-info {
+    position: absolute;
+    top: 490px;
+    left: 287px;
+}
+
+#shield-energy-info {
+    position: absolute;
+    top: 490px;
+    left: 167px;
+}
+
+#oxygen-energy-info {
+    position: absolute;
+    top: 490px;
+    left: 85px;
+}
+
+#attack-block {
+    position: absolute;
+    top: 430px;
+    left: 800px;
+}
