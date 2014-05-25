@@ -1,13 +1,45 @@
 #live {
     position: absolute;
+    top: 40px;
+    left: 145px;
+}
+
+#live2 {
+    position: absolute;
     top: 60px;
-    left: 45px;
+    left: 40px;
+}
+
+#live3 {
+    background-color: #009846;
+    position: absolute;
+    top: 60px;
+    left: 40px;
+    height: 18px;
+    width: 284px;
+}
+
+#live2 div {
+    float: left;
+    background-color: #009846;
+    width: 8px;
+    height: 20px;
+    margin-right: 1px;
 }
 
 #oxygen {
     position: absolute;
-    top: 130px;
-    left: 65px;
+    top: 150px;
+    left: 40px;
+}
+
+#oxygen-bar {
+    background-color: #006dcc;
+    position: absolute;
+    top: 135px;
+    left: 60px;
+    height: 10px;
+    width: 90px;
 }
 
 #enemy-live {

@@ -106,9 +106,9 @@ Shield.prototype = new Block();
 function Oxygen () {
     this._maxEnergy = 1;
     this.oxygen = 100;
-    this.lossPerSecond = 0.5;
+    this.lossPerSecond = 2;
     this.damagedBlocks = 0;
-    this.damagedBlocksLossPerSecond = 0.5;
+    this.damagedBlocksLossPerSecond = 3;
 
     this.calculate = function () {
         Oxygen.prototype.calculate.call(this);
@@ -159,6 +159,7 @@ game.controller('GameCtrl', function ($scope) {
 
     $scope.init = function () {
         $scope.createEnemy();
+        $scope.liveBar = $scope.createArray(30);
     };
 
     $scope.createEnemy = function () {
@@ -189,11 +190,28 @@ game.controller('GameCtrl', function ($scope) {
             damage = 0;
         }
         attacker.blocks[$scope.BLOCK_ARMAMENT].fire();
-        victim.live -= damage;
+        victim.live -= damage * 4;
+
+        $('#live3').width(victim.live*284/100);
 
         if (Math.random() < 0.2) {
             attacker.blocks[block_id].addDamage(new Damage(getRandomInt(0, 1)));
         }
+
+        $scope.liveBar = $scope.createArray($scope.player.live/3.3);
+//        new Array($scope.player.live/3.3);
+//        for (var i = 0; i < $scope.liveBar.length; i++) {
+//            $scope.liveBar[i] = i;
+//
+//        }
+    };
+
+    $scope.createArray = function (lenght) {
+        var arr = new Array(lenght);
+        for (var i = 0; i < arr.length; i++) {
+            arr[i] = i;
+        }
+        return arr;
     };
 
     $scope.update = function () {
@@ -209,6 +227,8 @@ game.controller('GameCtrl', function ($scope) {
         }
 
         $scope.enemyAttack();
+
+        $('#oxygen-bar').width($scope.player.blocks[$scope.BLOCK_OXYGEN].oxygen*90/100);
     };
 
     $scope.enemyAttack = function () {
